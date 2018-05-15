@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<script>
+//original pat: bsmhligkxwocatgxnkbvxqe45776wdxwjaq5d6xskxfzssuodbva
+
+//Get details for specific VSTS work item
+//Uses PAT authentication
+function getWorkItem() {
+  fetch("https://telecoaster.visualstudio.com/_apis/wit/workitems?ids=23&api-version=4.1", {
+    method: 'GET',
+    headers: {
+    'Authorization': 'Basic YW55dXNlcjpic21obGlna3h3b2NhdGd4bmtidnhxZTQ1Nzc2d2R4d2phcTVkNnhza3hmenNzdW9kYnZh'
+    },
+  }).then(function(response){
+    response.text().then(function(text){
+       document.getElementById("demo").innerHTML = text;
+    });
+  });
+};
+
+
+//Update the specified VSTS work item
+function updateWorkItem() {
+var data = [
+  {
+    "op": "add",
+    "path": "/fields/System.History",
+    "value": "Adding link"
+  },
+  {
+    "op": "add",
+    "path": "/relations/-",
+    "value": {
+      "rel": "Hyperlink",
+      "url": "http://www.google.com"
+    }
+  }
+  ];
+
+  fetch("https://telecoaster.visualstudio.com/_apis/wit/workitems/23?api-version=4.1", {
+  method: 'PATCH',
+  headers: {
+    'Content-Type': 'application/json-patch+json',
+    'Authorization': 'Basic YW55dXNlcjpic21obGlna3h3b2NhdGd4bmtidnhxZTQ1Nzc2d2R4d2phcTVkNnhza3hmenNzdW9kYnZh'
+  },
+  body: JSON.stringify(data)
+  }).then(function(response){
+    response.text().then(function(text){
+      document.getElementById("demo").innerHTML = text;
+    });
+  });
+
+};
+</script>
+</head>
+<body>
+  <h2>VSTS API Test</h2>
+  <p id="demo"></p>
+  <button type="button" onclick="getWorkItem()">Get</button>
+  <button type="button" onclick="updateWorkItem()">Update</button>
+</body>
+</html>
